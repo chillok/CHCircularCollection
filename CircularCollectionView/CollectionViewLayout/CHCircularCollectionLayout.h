@@ -13,8 +13,14 @@ enum CellStyle{
     CellStyleFixed
 };
 
+enum SectionStyle{
+    SectionStyleMultipleRings,
+    SectionStyleSingleRing
+};
+
 @interface CHCircularCollectionLayout : UICollectionViewLayout
 
 @property (nonatomic, assign) enum CellStyle cellStyle;
+@property (nonatomic, assign) enum SectionStyle sectionStyle;
 
 @end

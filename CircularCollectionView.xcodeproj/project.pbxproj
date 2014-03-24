@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		69027B7A18E0BF950024684F /* UIColor+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 69027B7918E0BF950024684F /* UIColor+Custom.m */; };
+		69027B7D18E0C2BB0024684F /* UIView+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = 69027B7C18E0C2BB0024684F /* UIView+Custom.m */; };
 		69AF6D3A18DDE065005470FF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AF6D3918DDE065005470FF /* Foundation.framework */; };
 		69AF6D3C18DDE065005470FF /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AF6D3B18DDE065005470FF /* CoreGraphics.framework */; };
 		69AF6D3E18DDE065005470FF /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69AF6D3D18DDE065005470FF /* UIKit.framework */; };
@@ -35,6 +37,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		69027B7818E0BF950024684F /* UIColor+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Custom.h"; sourceTree = "<group>"; };
+		69027B7918E0BF950024684F /* UIColor+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Custom.m"; sourceTree = "<group>"; };
+		69027B7B18E0C2BB0024684F /* UIView+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Custom.h"; sourceTree = "<group>"; };
+		69027B7C18E0C2BB0024684F /* UIView+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Custom.m"; sourceTree = "<group>"; };
 		69AF6D3618DDE065005470FF /* CircularCollectionView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CircularCollectionView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69AF6D3918DDE065005470FF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		69AF6D3B18DDE065005470FF /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -83,6 +89,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		69027B7718E0BF860024684F /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				69027B7818E0BF950024684F /* UIColor+Custom.h */,
+				69027B7918E0BF950024684F /* UIColor+Custom.m */,
+				69027B7B18E0C2BB0024684F /* UIView+Custom.h */,
+				69027B7C18E0C2BB0024684F /* UIView+Custom.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		69AF6D2D18DDE064005470FF = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +132,7 @@
 		69E84B5418DF615C0057C5BA /* CircularCollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				69027B7718E0BF860024684F /* Categories */,
 				69E84B7918DF61890057C5BA /* CollectionViewLayout */,
 				69E84B7A18DF61890057C5BA /* Utility */,
 				69E84B5518DF615C0057C5BA /* AppDelegate.h */,
@@ -264,11 +282,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				69E84B8318DF61CA0057C5BA /* CHCircularCollectionLayout.m in Sources */,
+				69027B7D18E0C2BB0024684F /* UIView+Custom.m in Sources */,
 				69E84B7518DF615C0057C5BA /* ViewController.m in Sources */,
 				69E84B6C18DF615C0057C5BA /* AppDelegate.m in Sources */,
 				69E84B7F18DF61A60057C5BA /* Math.m in Sources */,
 				69E84B8018DF61A60057C5BA /* PointObj.m in Sources */,
 				69E84B8D18DF620F0057C5BA /* main.m in Sources */,
+				69027B7A18E0BF950024684F /* UIColor+Custom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

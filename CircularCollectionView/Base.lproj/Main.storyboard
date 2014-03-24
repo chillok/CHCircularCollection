@@ -22,15 +22,15 @@
                                 <collectionViewLayout key="collectionViewLayout" id="zlD-Uw-mPA" customClass="CHCircularCollectionLayout"/>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCellIdentifier" id="EoB-w2-4Xg">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <color key="backgroundColor" red="0.66456043279999999" green="0.73119216590000002" blue="0.87046329030000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <size key="customSize" width="20" height="20"/>
+                                        <size key="customSize" width="30" height="30"/>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>

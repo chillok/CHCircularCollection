@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "CHCircularCollectionLayout.h"
+#import "UIColor+Custom.h"
+#import "UIView+Custom.h"
 
 static NSString *kCollectionViewCell = @"CollectionViewCellIdentifier";
 
@@ -20,19 +22,37 @@ static NSString *kCollectionViewCell = @"CollectionViewCellIdentifier";
 @implementation ViewController {
 
     NSArray *items;
+    NSMutableArray *colors;
 }
+
 - (void)setup
 {
-    NSInteger numItems = 50;
+    colors = [NSMutableArray new];
+    
+    NSInteger numItemsPerSection = 6;
+    NSInteger numSections = 3;
+    
     NSMutableArray *array = [NSMutableArray new];
-    for (NSInteger i = 0; i < numItems; i++) {
-        [array addObject:@"item"];
+    
+    for (NSInteger sectionCount = 0; sectionCount < numSections; sectionCount++) {
+        NSMutableArray *section = [NSMutableArray new];
+        
+        [colors addObject:[UIColor randomColor]];
+        
+        for (NSInteger itemCount = 0; itemCount < numItemsPerSection; itemCount++) {
+            [section addObject:@"item"];
+        }
+        
+        [array addObject:section];
     }
+    
     items = [[NSArray alloc] initWithArray:array];
     
     _collectionView.backgroundColor = [UIColor clearColor];
+    
     CHCircularCollectionLayout *layout = [CHCircularCollectionLayout new];
     layout.cellStyle = CellStyleRotateToCenter;
+    layout.sectionStyle = SectionStyleSingleRing;
 
     [_collectionView setCollectionViewLayout:layout];
 }
@@ -46,21 +66,34 @@ static NSString *kCollectionViewCell = @"CollectionViewCellIdentifier";
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return items.count;
+    return [[(NSArray *)items objectAtIndex:section] count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 1;
+    return items.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCollectionViewCell forIndexPath:indexPath];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(2, 0, 10, 10)];
-    [label setText:[NSString stringWithFormat:@"%d", indexPath.row]];
-    [label setFont:[UIFont fontWithName:@"Helvetica" size:6]];
+    
+    // give each some colour
+    UIColor *color = [colors objectAtIndex:indexPath.section];
+    NSInteger current = indexPath.row + 1;
+    NSInteger total = [self.collectionView numberOfItemsInSection:indexPath.section];
+    CGFloat cellAlpha = (float)current/(float)total;
+    cell.backgroundColor = [color colorWithAlphaComponent:cellAlpha];
+    
+    // index each
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 30, 30)];
+    [label setText:[NSString stringWithFormat:@"%d|%d", indexPath.section, indexPath.row]];
+    [label setFont:[UIFont fontWithName:@"Helvetica" size:10]];
     [cell addSubview:label];
+    
+    // style
+//    [cell round];
+    
     return cell;
 }
 

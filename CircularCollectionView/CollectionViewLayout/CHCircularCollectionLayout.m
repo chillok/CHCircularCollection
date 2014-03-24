@@ -13,12 +13,12 @@
 #import "Math.h"
 #import "PointObj.h"
 
-#define kCellHeight 15.0f
-#define kCellWidth 11.0f
+#define kCellHeight 30.0f
+#define kCellWidth 30.0f
 
 @interface CHCircularCollectionLayout()
 
-@property (assign, nonatomic) NSArray *points;
+@property (copy, nonatomic) NSArray *points;
 @property (assign, nonatomic) CGPoint centerPoint;
 
 @end
@@ -51,6 +51,67 @@
     self.centerPoint = CGPointMake(150, 200);
 }
 
+- (void)prepareLayout
+{
+    
+    [super prepareLayout];
+    
+    // get a circle of points
+    
+    NSMutableArray *array = [NSMutableArray new];
+    
+    if (self.sectionStyle == SectionStyleMultipleRings) {
+        
+        for (NSInteger sectionCount = 0; sectionCount < self.collectionView.numberOfSections; sectionCount++) {
+            NSMutableArray *section = [NSMutableArray new];
+            
+            CGFloat distanceFromCenter = 100 - (25 * sectionCount);
+            NSInteger numItems = [self.collectionView numberOfItemsInSection:sectionCount];
+            CGFloat angle = 360.0f/numItems;
+            
+            for (CGFloat currentAngle = 0; currentAngle <= 360; currentAngle+=angle) {
+                CGFloat x = distanceFromCenter * cos([Math degreesToRadians:currentAngle]) + self.centerPoint.x;
+                CGFloat y = distanceFromCenter * sin([Math degreesToRadians:currentAngle]) + self.centerPoint.y;
+                
+                PointObj *point = [[PointObj alloc] initWithX:x andY:y];
+                [section addObject:point];
+            }
+            
+            [array addObject:section];
+        }
+        
+    }
+    
+    else if (self.sectionStyle == SectionStyleSingleRing) {
+        
+        CGFloat resetAngle = 0;
+        
+        for (NSInteger sectionCount = 0; sectionCount < self.collectionView.numberOfSections; sectionCount++) {
+            NSMutableArray *section = [NSMutableArray new];
+            
+            CGFloat distanceFromCenter = 100;
+            NSInteger numItems = [self.collectionView numberOfItemsInSection:sectionCount];
+            CGFloat angle = 360.0f/(numItems * self.collectionView.numberOfSections);
+            
+            NSInteger itemCount = 0;
+            for (CGFloat currentAngle = resetAngle; itemCount < [self.collectionView numberOfItemsInSection:sectionCount]; currentAngle+=angle, itemCount++) {
+                CGFloat x = distanceFromCenter * cos([Math degreesToRadians:currentAngle]) + self.centerPoint.x;
+                CGFloat y = distanceFromCenter * sin([Math degreesToRadians:currentAngle]) + self.centerPoint.y;
+                
+                PointObj *point = [[PointObj alloc] initWithX:x andY:y];
+                [section addObject:point];
+                resetAngle = currentAngle+angle;
+            }
+            
+            [array addObject:section];
+        }
+        
+    }
+    
+    _points = [NSArray arrayWithArray:array];
+    
+}
+
 - (double)positionForAttributes:(UICollectionViewLayoutAttributes *)attributes forItemAtIndexPath:(NSIndexPath *)indexPath
 {
 
@@ -58,7 +119,7 @@
     CGPoint pointA = self.centerPoint;
 
     // the collection view cell center
-    CGPoint pointC = [(PointObj *)[self.points objectAtIndex:indexPath.row] point];
+    CGPoint pointC = [(PointObj *)[[self.points objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] point];
     
     // this is a virtual point
     CGPoint pointB = CGPointMake(pointA.x, pointC.y);
@@ -81,7 +142,6 @@
     
     double acosVal = acos(val);
     C = [Math radiansToDegrees:acosVal];
-    
     
     double answer = 0;
     if (pointC.y + attributes.size.height/2 < self.centerPoint.y) {
@@ -106,32 +166,9 @@
         }
     }
     
+    
     NSLog(@"%d: %f", indexPath.row, answer);
     return answer;
-}
-
-- (void)prepareLayout
-{
-    
-    [super prepareLayout];
-    
-    // get a circle of points
-    
-    NSMutableArray *array = [NSMutableArray new];
-    
-
-    CGFloat distanceFromCenter = 100;
-    CGFloat angle = 360.0f/[self.collectionView numberOfItemsInSection:0];
-    
-    for (CGFloat currentAngle = 0; currentAngle <= 360; currentAngle+=angle) {
-        CGFloat x = distanceFromCenter * cos([Math degreesToRadians:currentAngle]) + self.centerPoint.x;
-        CGFloat y = distanceFromCenter * sin([Math degreesToRadians:currentAngle]) + self.centerPoint.y;
-        
-        PointObj *point = [[PointObj alloc] initWithX:x andY:y];
-        [array addObject:point];
-    }
-    
-    _points = [NSArray arrayWithArray:array];
 }
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
@@ -141,10 +178,13 @@
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSMutableArray *attributes = [NSMutableArray array];
-    for (int item = 0; item < [self.collectionView numberOfItemsInSection:0]; item++) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:0];
-        [attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+    for (NSInteger sectionCount = 0; sectionCount < self.collectionView.numberOfSections; sectionCount++) {
+        for (NSInteger itemCount = 0; itemCount < [self.collectionView numberOfItemsInSection:sectionCount]; itemCount++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:itemCount inSection:sectionCount];
+            [attributes addObject:[self layoutAttributesForItemAtIndexPath:indexPath]];
+        }
     }
+    
     return attributes;
 }
 
@@ -159,10 +199,11 @@
     UICollectionViewLayoutAttributes *attributes = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
     
     
-    PointObj *point = [self.points objectAtIndex:indexPath.row];
+    PointObj *point = [[self.points objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
     
     attributes.size = CGSizeMake(kCellWidth, kCellHeight);
     attributes.center = CGPointMake(point.x, point.y);
+    
     if (self.cellStyle == CellStyleRotateToCenter) {
         double rotation = [self positionForAttributes:attributes forItemAtIndexPath:indexPath];
         attributes.transform = CGAffineTransformMakeRotation([Math degreesToRadians:rotation]);
