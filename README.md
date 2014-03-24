@@ -1,5 +1,11 @@
 ## A Circular UICollectionViewLayout
 
+An ongoing project.
+
+- Supports multiple sections
+- Supports multiple (two, for now) styles for displaying sections.
+- Cells can rotate to face towards centre point.
+
 **Version 0.1.1**
 
 Added support for multipe sections.
